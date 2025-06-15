@@ -1,7 +1,7 @@
 import { ApiError } from "../utils/ApiError.js"
 import {asyncHandler} from "../utils/asyncHandler.js"
 import { User } from "../models/user.model.js"
-import { uploadOnCloudinary } from "../utils/cloudnary.js"
+import { uploadOnCloudinary } from "../utils/cloudinary.js"
 import { ApiResponse } from "../utils/ApiResponse.js"
 
 const registerUser =asyncHandler(async (req,res)=>{
@@ -23,7 +23,7 @@ const registerUser =asyncHandler(async (req,res)=>{
 
 
     // get details from frontend
-    const {fullName,email,username,password}=req.body
+    const {fullName,email,username,password}=req.body || {}
     // console.log(email);
 
     // validation of user
@@ -35,7 +35,7 @@ const registerUser =asyncHandler(async (req,res)=>{
     }
 
     // checking existing users
-    const existedUser=User.findOne({
+    const existedUser= await User.findOne({
         // username
         // agar do field se check karna hai to then
         $or:[{email},{username}]
